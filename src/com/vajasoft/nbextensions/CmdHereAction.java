@@ -1,5 +1,6 @@
 package com.vajasoft.nbextensions;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,8 +14,8 @@ import org.openide.loaders.DataObject;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 
-@ActionID(category = "Tools", id = "com.vajasoft.nbextensions.ExploreHere")
-@ActionRegistration(iconBase = "explore-here-tp.png", displayName = "#CTL_ExploreHere")
+@ActionID(category = "Tools", id = "com.vajasoft.nbextensions.CmdHereAction")
+@ActionRegistration(iconBase = "cmd-here-tp.png", displayName = "#CTL_CmdHereAction")
 @ActionReferences({
     @ActionReference(path = "Menu/Tools"),
     @ActionReference(path = "Toolbars/Tools"),
@@ -22,11 +23,11 @@ import org.openide.util.NbBundle.Messages;
     @ActionReference(path = "Loaders/image/png-gif-jpeg-bmp/Actions"),
     @ActionReference(path = "Loaders/text/x-java/Actions")
 })
-@Messages("CTL_ExploreHere=Open Explorer")
-public final class ExploreHere implements ActionListener {
+@Messages("CTL_CmdHereAction=Open Command Prompt")
+public final class CmdHereAction implements ActionListener {
     private final DataObject context;
 
-    public ExploreHere(DataObject context) {
+    public CmdHereAction(DataObject context) {
         this.context = context;
     }
 
@@ -37,7 +38,9 @@ public final class ExploreHere implements ActionListener {
             file = file.getParent();
         }
         try {
-            Runtime.getRuntime().exec("explorer.exe .", null, new File(file.getPath()));
+            Runtime.getRuntime().exec("cmd.exe /C start cmd.exe", null, new File(file.getPath()));
+//            Runtime.getRuntime().exec("cmd.exe /K cd " + file.getPath());
+//            Process p = new ProcessBuilder("cmd.exe").directory(new File(file.getPath())).start();
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
